@@ -4,10 +4,17 @@
 #include <vector>
 #include <sstream>
 #include <queue>
-#include "x64/FindShortestPath.h"
+#include "FindShortestPath.h"
 
 using namespace std;
-
+bool ifStringIsDigit(const std::string s) {
+    for (int i = 0; i < s.size(); i++) {
+        if (s[i] < '0' or s[i] > '9') {
+            return false;
+        }
+    }
+    return true;
+}
 /*! Найти стоимость кратчайшего маршрута с заданного источника до последнего города
 *\param[in] adj_matrix - матрица смежности
 *\param[in] V - количество рассматриваемых вершин
@@ -69,8 +76,13 @@ vector<string> readMatrixFromFile(vector<vector<int>>& adj_matrix)
         string value;
         int col = 0;
         while (getline(ss, value, ';')) {
-            if (value != "" && col > 0) {
-                adj_matrix[row][col - 1] = stoi(value);
+            if (value != "" and col > 0) 
+            {
+                ifStringIsDigit(value) ? adj_matrix[row][col - 1] = stoi(value) : throw InvalidInputException("в таблице смежности неверно указана стоимость бензина ");
+                if (adj_matrix[row][col - 1] < 0)
+                {
+                    throw InvalidInputException("стоимость бензина не может быть отрицательной");
+                }
             }
             col++;
         }
@@ -96,7 +108,7 @@ vector<string> readMatrixFromFile(vector<vector<int>>& adj_matrix)
     file.close();
 
     if (isLoop)
-        throw InvalidInputException("в таблице смежности  содержится петля");
+        throw InvalidInputException("в таблице смежности содержится петля");
     if (!allEqual)
         throw InvalidInputException("в таблице смежности неверно указана стоимость бензина в городе прибытия.");
 
@@ -104,6 +116,9 @@ vector<string> readMatrixFromFile(vector<vector<int>>& adj_matrix)
 
     return labels;
 }
+
+
+
 /*! Вывод результата в выходной файл
 *\param[in] adj_matrix - матрица смежности
 *\param[in] result - стоимость кратчайшего маршрута до города N
