@@ -7,6 +7,10 @@
 #include "FindShortestPath.h"
 
 using namespace std;
+/*! Определить, является ли строка числом
+*\param[in] s - анализируемая строка
+* return - является строка числом или нет
+*/
 bool ifStringIsDigit(const std::string s) {
     for (int i = 0; i < s.size(); i++) {
         if (s[i] < '0' or s[i] > '9') {
@@ -78,17 +82,20 @@ vector<string> readMatrixFromFile(vector<vector<int>>& adj_matrix)
         while (getline(ss, value, ';')) {
             if (value != "" and col > 0) 
             {
+                if (labels.size() + 1 == col)
+                    throw InvalidInputException("содержится лишняя стоимость бензина");
                 ifStringIsDigit(value) ? adj_matrix[row][col - 1] = stoi(value) : throw InvalidInputException("в таблице смежности неверно указана стоимость бензина ");
                 if (adj_matrix[row][col - 1] < 0)
-                {
                     throw InvalidInputException("стоимость бензина не может быть отрицательной");
-                }
             }
             col++;
         }
         row++;
+        //TODO добавить исключение для данной ситуациии
+        if (adj_matrix[0][row] != adj_matrix[row][0])
+            throw InvalidInputException("названия городов в таблице смежности несимметричны");
     }
-
+   
     bool allEqual = true;
     bool isLoop = false;
     for (size_t i = 0; i < labels.size(); i++)
@@ -112,18 +119,15 @@ vector<string> readMatrixFromFile(vector<vector<int>>& adj_matrix)
     if (!allEqual)
         throw InvalidInputException("в таблице смежности неверно указана стоимость бензина в городе прибытия.");
 
-
-
     return labels;
 }
 
 
 
 /*! Вывод результата в выходной файл
-*\param[in] adj_matrix - матрица смежности
 *\param[in] result - стоимость кратчайшего маршрута до города N
 */
-void outputResultToFile(vector<vector<int>> adj_matrix, int result)
+void outputResultToFile(int result)
 {
     //вывод в файл
     ofstream fout;
