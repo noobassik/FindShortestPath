@@ -75,11 +75,16 @@ vector<string> readMatrixFromFile(vector<vector<int>>& adj_matrix)
     adj_matrix.resize(labels.size(), vector<int>(labels.size(), 0));
     //заполнение матрицы смежности из файла
     int row = 0;
+    int col;
     while (getline(file, line)) {
         stringstream ss(line);
         string value;
-        int col = 0;
+        col = 0;
         while (getline(ss, value, ';')) {
+            if (adj_matrix.size() == row)
+            {
+                throw InvalidInputException("названия городов в таблице смежности несимметричны");
+            }
             if (value != "" and col > 0) 
             {
                 if (labels.size() + 1 == col)
@@ -91,9 +96,10 @@ vector<string> readMatrixFromFile(vector<vector<int>>& adj_matrix)
             col++;
         }
         row++;
-        //TODO добавить исключение для данной ситуациии
-        if (adj_matrix[0][row] != adj_matrix[row][0])
-            throw InvalidInputException("названия городов в таблице смежности несимметричны");
+    }
+    if (row != col - 1)
+    {
+        throw InvalidInputException("названия городов в таблице смежности несимметричны");
     }
    
     bool allEqual = true;
@@ -145,7 +151,7 @@ void outputResultToFile(int result)
     fout.close();
 }
 
-int main()
+int main(int argc, char* argv[])
 {
     setlocale(LC_ALL, "Russian");
     vector<vector<int>> adj_matrix;
@@ -171,7 +177,7 @@ int main()
         return 0;
     }
     int result = findShortestPath(adj_matrix, labels.size(), 0);
-    outputResultToFile(adj_matrix, result);
+    outputResultToFile(result);
 
     return 0;
 }
