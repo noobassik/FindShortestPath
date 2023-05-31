@@ -12,7 +12,8 @@ using namespace std;
 *\param[in] s - анализируемая строка
 * return - является строка числом или нет
 */
-bool ifStringIsDigit(const string s) {
+bool ifStringIsDigit(const string s)
+{
     for (int i = 0; i < s.size(); i++) {
         if (s[i] < '0' or s[i] > '9') {
             return false;
@@ -45,6 +46,13 @@ int findShortestPath(vector<vector<int>> adj_matrix, int V, int src)
     }
     return dist.back();
 }
+/*! Заполнение строки в матрице
+*\param[in, out] adj_matrix - матрица смежности
+*\param[in] labels - вектор городов
+*\param[in] row - количество строк
+*\param[in, out] col - количество столбцов
+*\param[in] line - строка, из которой берутся значения
+*/
 void fillRowInVector(vector<vector<int>>& adj_matrix, vector<string> labels, int row, int& col, string line)
 {
     stringstream ss(line);
@@ -55,11 +63,16 @@ void fillRowInVector(vector<vector<int>>& adj_matrix, vector<string> labels, int
         {
             if (labels.size() + 1 == col)
                 throw InvalidInputException("содержится лишняя стоимость бензина");
-            ifStringIsDigit(value) ? adj_matrix[row][col - 1] = stoi(value) : throw InvalidInputException("в таблице смежности неверно указана стоимость бензина ");
+            ifStringIsDigit(value) ? adj_matrix[row][col - 1] = stoi(value) : throw InvalidInputException("значениеми таблицы должны являеться неотрицательные числа");
         }
         col++;
     }
+ 
 }
+/* Валидация считанной матрицы
+*\param[in] adj_matrix 
+*\param[in] labels 
+*/
 void matrixValidation(vector<vector<int>>& adj_matrix, vector<string> labels)
 {
     for (size_t i = 0; i < labels.size(); i++)
@@ -73,6 +86,7 @@ void matrixValidation(vector<vector<int>>& adj_matrix, vector<string> labels)
                 if (adj_matrix[k][k] != 0)
                     throw InvalidInputException("в таблице смежности содержится петля");
             }
+            //?????????????????????
             if (adj_matrix[i][j] < 0)
                 throw InvalidInputException("стоимость бензина не может быть отрицательной");
         }
@@ -111,14 +125,12 @@ vector<string> readMatrixFromFile(vector<vector<int>>& adj_matrix, const string&
     int row = 0;
     int col;
     while (getline(file, line)) {
-
         fillRowInVector(adj_matrix, labels, row, col, line);
         row++;
     }
+    //????????????????????????????
     if (row != col - 1)
         throw InvalidInputException("названия городов в таблице смежности несимметричны");
-
-
     file.close();
     return labels;
 }
@@ -143,7 +155,6 @@ void outputResultToFile(int result, const string& outputFilePath)
     }
     fout.close();
 }
-
 
 int main(int argc, char* argv[])
 {
