@@ -41,19 +41,26 @@ int findShortestPath(vector<vector<int>> adj_matrix, int V, int src)
 
 void fillRowInVector(vector<vector<int>>& adj_matrix, vector<string> labels, int row, int& col, string line)
 {
+    if (line.size() < 1)
+        throw InvalidInputException("Строка не должна быть пустой");
     stringstream ss(line);
     string value;
     col = 0;
     while (getline(ss, value, ';')) {
-        if (value != "" and col > 0)
+        if (value != "")
         {
-            if (labels.size() + 1 == col)
-                throw InvalidInputException("содержится лишняя стоимость бензина");
-            ifStringIsDigit(value) ? adj_matrix[row][col - 1] = stoi(value) : throw InvalidInputException("значениеми таблицы должны являеться неотрицательные числа");
+            if (col > 0)
+            {
+                if (labels.size() + 1 == col)
+                    throw InvalidInputException("содержится лишняя стоимость бензина");
+                ifStringIsDigit(value) ? adj_matrix[row][col - 1] = stoi(value) : throw InvalidInputException("значениеми таблицы должны являеться неотрицательные числа");
+            }
         }
+        else
+            throw InvalidInputException("значениеми таблицы должны являеться неотрицательные числа");
         col++;
     }
- 
+    row++;
 }
 
 void matrixValidation(vector<vector<int>>& adj_matrix, vector<string> labels)
@@ -105,7 +112,6 @@ vector<string> readMatrixFromFile(vector<vector<int>>& adj_matrix, const string&
     int col;
     while (getline(file, line)) {
         fillRowInVector(adj_matrix, labels, row, col, line);
-        row++;
     }
     //????????????????????????????
     if (row != col - 1)
@@ -194,6 +200,7 @@ int main(int argc, char* argv[])
     {
         return 0;
     }
+
     int result = findShortestPath(adj_matrix, labels.size(), 0);
     outputResultToFile(result, argv[2]);
 

@@ -116,5 +116,22 @@ namespace TestfindShortestPath
 
 			Assert::AreEqual(exp_result, result);
 		}
+
+		TEST_METHOD(complex)
+		{
+			vector<vector<int>> matrix = { {0,1,0,2,0},
+											{0,0,3,2,0},
+											{0,1,0,2,5},
+											{0,1,3,0,5},
+											{0,0,3,2,0} };
+
+
+			int V = 5;
+			int src = 0;
+			int result = findShortestPath(matrix, V, src);
+			int exp_result = 7;
+
+			Assert::AreEqual(exp_result, result);
+		}
 	};
 }

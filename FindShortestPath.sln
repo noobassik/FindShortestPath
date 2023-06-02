@@ -7,6 +7,8 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "FindShortestPath", "FindSho
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Test_findShortestPath", "Test_findShortestPath\Test_findShortestPath.vcxproj", "{565DF331-E6D1-4B38-99D9-06303F64AFFB}"
 EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Test_fillRowInVector", "Test_fillRowInVector\Test_fillRowInVector.vcxproj", "{E4ABFF51-9330-4FD6-AF16-4653E890574C}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|x64 = Debug|x64
@@ -31,6 +33,14 @@ Global
 		{565DF331-E6D1-4B38-99D9-06303F64AFFB}.Release|x64.Build.0 = Release|x64
 		{565DF331-E6D1-4B38-99D9-06303F64AFFB}.Release|x86.ActiveCfg = Release|Win32
 		{565DF331-E6D1-4B38-99D9-06303F64AFFB}.Release|x86.Build.0 = Release|Win32
+		{E4ABFF51-9330-4FD6-AF16-4653E890574C}.Debug|x64.ActiveCfg = Debug|x64
+		{E4ABFF51-9330-4FD6-AF16-4653E890574C}.Debug|x64.Build.0 = Debug|x64
+		{E4ABFF51-9330-4FD6-AF16-4653E890574C}.Debug|x86.ActiveCfg = Debug|Win32
+		{E4ABFF51-9330-4FD6-AF16-4653E890574C}.Debug|x86.Build.0 = Debug|Win32
+		{E4ABFF51-9330-4FD6-AF16-4653E890574C}.Release|x64.ActiveCfg = Release|x64
+		{E4ABFF51-9330-4FD6-AF16-4653E890574C}.Release|x64.Build.0 = Release|x64
+		{E4ABFF51-9330-4FD6-AF16-4653E890574C}.Release|x86.ActiveCfg = Release|Win32
+		{E4ABFF51-9330-4FD6-AF16-4653E890574C}.Release|x86.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
