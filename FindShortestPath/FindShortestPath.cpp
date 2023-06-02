@@ -6,6 +6,7 @@
 #include <sstream>
 #include <queue>
 #include "FindShortestPath.h"
+#include "Exceptions.h" 
 
 using namespace std;
 

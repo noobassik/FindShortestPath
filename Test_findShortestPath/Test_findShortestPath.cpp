@@ -1,7 +1,8 @@
 #include "pch.h"
 #include "CppUnitTest.h"
 #include "../FindShortestPath/FindShortestPath.h"
-#include <vector>
+#include "../FindShortestPath/Exceptions.h"
+
 using namespace Microsoft::VisualStudio::CppUnitTestFramework;
 
 namespace TestfindShortestPath
