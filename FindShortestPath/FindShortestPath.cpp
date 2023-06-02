@@ -8,10 +8,7 @@
 #include "FindShortestPath.h"
 
 using namespace std;
-/*! Определить, является ли строка числом
-*\param[in] s - анализируемая строка
-* return - является строка числом или нет
-*/
+
 bool ifStringIsDigit(const string s)
 {
     for (int i = 0; i < s.size(); i++) {
@@ -21,12 +18,7 @@ bool ifStringIsDigit(const string s)
     }
     return true;
 }
-/*! Найти стоимость кратчайшего маршрута с заданного источника до последнего города
-*\param[in] adj_matrix - матрица смежности
-*\param[in] V - количество рассматриваемых вершин
-*\param[in] src - источник
-* return - стоимость кратчайшего маршрута до последнего города
-*/
+
 int findShortestPath(vector<vector<int>> adj_matrix, int V, int src)
 {
     vector<int> dist(V, INT_MAX); // Инициализировать все расстояния как бесконечные
@@ -46,13 +38,7 @@ int findShortestPath(vector<vector<int>> adj_matrix, int V, int src)
     }
     return dist.back();
 }
-/*! Заполнение строки в матрице
-*\param[in, out] adj_matrix - матрица смежности
-*\param[in] labels - вектор городов
-*\param[in] row - количество строк
-*\param[in, out] col - количество столбцов
-*\param[in] line - строка, из которой берутся значения
-*/
+
 void fillRowInVector(vector<vector<int>>& adj_matrix, vector<string> labels, int row, int& col, string line)
 {
     stringstream ss(line);
@@ -69,10 +55,7 @@ void fillRowInVector(vector<vector<int>>& adj_matrix, vector<string> labels, int
     }
  
 }
-/* Валидация считанной матрицы
-*\param[in] adj_matrix 
-*\param[in] labels 
-*/
+
 void matrixValidation(vector<vector<int>>& adj_matrix, vector<string> labels)
 {
     for (size_t i = 0; i < labels.size(); i++)
@@ -92,11 +75,7 @@ void matrixValidation(vector<vector<int>>& adj_matrix, vector<string> labels)
         }
     }
 }
-/*! Считать матрицу с файла
-*\param[in,out] adj_matrix - матрица смежности
-*\param[in] inputFilePath - путь к входному файлу
-* return - вектор городов
-*/
+
 vector<string> readMatrixFromFile(vector<vector<int>>& adj_matrix, const string& inputFilePath)
 {
     string line;
@@ -134,10 +113,7 @@ vector<string> readMatrixFromFile(vector<vector<int>>& adj_matrix, const string&
     file.close();
     return labels;
 }
-/*! Вывод результата в выходной файл
-*\param[in] result - стоимость кратчайшего маршрута до последнего города
-*\param[in] outputFilePath - путь к выходному файлу
-*/
+
 void outputResultToFile(int result, const string& outputFilePath)
 {
     //вывод в файл
