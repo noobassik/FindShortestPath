@@ -126,8 +126,17 @@ namespace TestfillRowInVector
 			real_vector.resize(5, vector<int>(labels.size(), 0));
 			vector<int> exp_vector = {0, 1, 0, 2, 0};
 			int row = 0, col = 0;
-			fillRowInVector(real_vector, labels, row, col, line);
-			Assert::IsTrue(compareVectors(exp_vector, real_vector));
+			try {
+				fillRowInVector(real_vector, labels, row, col, line);
+				Assert::Fail(L"Expected exception not thrown.");
+			}
+			catch (const FileNotFoundException& ex) {
+			}
+			catch (const InvalidInputException& ex) {
+			}
+			catch (...) {
+				Assert::Fail(L"Unexpected exception thrown.");
+			}
 		}
 		TEST_METHOD(oneElement)
 		{
@@ -144,6 +153,27 @@ namespace TestfillRowInVector
 		{
 			vector<string> labels = { "A", "B", "C", "D", "E" };
 			string line = ";;;;;";
+			vector<vector<int>> real_vector;
+			real_vector.resize(5, vector<int>(labels.size(), 0));
+			vector<int> exp_vector = {};
+			int row = 0, col = 0;
+			try {
+				fillRowInVector(real_vector, labels, row, col, line);
+				Assert::Fail(L"Expected exception not thrown.");
+			}
+			catch (const FileNotFoundException& ex) {
+			}
+			catch (const InvalidInputException& ex) {
+			}
+			catch (...) {
+				Assert::Fail(L"Unexpected exception thrown.");
+			}
+		}
+
+		TEST_METHOD(verticalAsymmetry)
+		{
+			vector<string> labels = { "A", "B", "C", "D" };
+			string line = "A;0;1;0;2;0;";
 			vector<vector<int>> real_vector;
 			real_vector.resize(5, vector<int>(labels.size(), 0));
 			vector<int> exp_vector = {};

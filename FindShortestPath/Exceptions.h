@@ -1,45 +1,30 @@
-#pragma once
-#include <exception>
-#include <string>
-
-class FileNotFoundException : public std::exception {
-
-private:
-    string message;
-
-
-public:
-
-    FileNotFoundException(string msg)
-    {
-        this->message = msg;
-    }
-
-
-    string what()
-    {
-        return "Файл не найден: " + message;
-    }
-
-};
-
-class InvalidInputException : public std::exception {
-
-private:
-    string message;
-
-
-public:
-
-    InvalidInputException(string msg)
-    {
-        this->message = msg;
-    }
-
-
-    string what()
-    {
-        return "Во входном файле " + message;
-    }
-
-};
+//#pragma once
+//#include <exception>
+//#include <string>
+//
+//using namespace std;
+//
+//class FileNotFoundException : public std::exception {
+//
+//private:
+//    string message;
+//public:
+//
+//    FileNotFoundException(const string& message);
+//
+//    const char* what() const noexcept override;
+//};
+//
+//class InvalidInputException : public std::exception {
+//
+//private:
+//    string message;
+//
+//
+//public:
+//
+//    InvalidInputException(const string& message);
+//
+//    const char* what() const noexcept override;
+//
+//};

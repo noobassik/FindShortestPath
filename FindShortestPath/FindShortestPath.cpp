@@ -12,11 +12,20 @@ using namespace std;
 
 bool ifStringIsDigit(const string s)
 {
-    for (int i = 0; i < s.size(); i++) {
-        if (s[i] < '0' or s[i] > '9') {
+    int i = 0; int c = 0;
+    for (; i < s.size(); i++) {
+        // Если текущим значением не является цифра - вернуть false
+        if (s[i] < '0' || s[i] > '9') {
             return false;
         }
+        // Если текущим значением является 0 и это первое значение строки
+        if (s[i] == '0' && i == 0) {
+            c++; // Увеличить количество 0
+        }
     }
+    if (c == 1 && i == c) return true; // Если значение является цифрой 0 - вернуть true;
+    else if (c == 1) return false; // Иначе Если значение начинается с 0, но не является цифрой 0 - вернуть false
+    if (i == 0) return false; // Если значение пустое - вернуть false
     return true;
 }
 
@@ -40,7 +49,7 @@ int findShortestPath(vector<vector<int>> adj_matrix, int V, int src)
     return dist.back();
 }
 
-void fillRowInVector(vector<vector<int>>& adj_matrix, vector<string> labels, int row, int& col, string line)
+void fillRowInVector(vector<vector<int>>& adj_matrix, vector<string> labels, int &row, int& col, string line)
 {
     if (line.size() < 1)
         throw InvalidInputException("Строка не должна быть пустой");
@@ -54,6 +63,8 @@ void fillRowInVector(vector<vector<int>>& adj_matrix, vector<string> labels, int
             {
                 if (labels.size() + 1 == col)
                     throw InvalidInputException("содержится лишняя стоимость бензина");
+                if (row == labels.size())
+                    throw InvalidInputException("названия городов в таблице смежности несимметричны");
                 ifStringIsDigit(value) ? adj_matrix[row][col - 1] = stoi(value) : throw InvalidInputException("значениеми таблицы должны являеться неотрицательные числа");
             }
         }
@@ -62,10 +73,13 @@ void fillRowInVector(vector<vector<int>>& adj_matrix, vector<string> labels, int
         col++;
     }
     row++;
+    if (labels.size() == row and row != col - 1)
+        throw InvalidInputException("названия городов в таблице смежности несимметричны");
 }
 
 void matrixValidation(vector<vector<int>>& adj_matrix, vector<string> labels)
 {
+    int zeroCounter = 0;
     for (size_t i = 0; i < labels.size(); i++)
     {
         for (size_t j = 0; j < labels.size(); j++)
@@ -76,10 +90,19 @@ void matrixValidation(vector<vector<int>>& adj_matrix, vector<string> labels)
                     throw InvalidInputException("в таблице смежности неверно указана стоимость бензина в городе прибытия.");
                 if (adj_matrix[k][k] != 0)
                     throw InvalidInputException("в таблице смежности содержится петля");
+                if (adj_matrix[labels.size() - 1][k] == 0)
+                    zeroCounter++;
             }
-            //?????????????????????
-            if (adj_matrix[i][j] < 0)
-                throw InvalidInputException("стоимость бензина не может быть отрицательной");
+            if (zeroCounter == labels.size())
+                throw InvalidInputException("названия городов в таблице смежности несимметричны");
+
+            if (adj_matrix[i][0] != 0)
+                throw InvalidInputException("дороги в первый город быть не должно");
+
+            if (((adj_matrix[i][j] == 0 and i > 0) and (adj_matrix[j][i] != 0 and j > 0)) or ((adj_matrix[i][j] != 0 and i > 0) and (adj_matrix[j][i] == 0 and j > 0))) {
+                throw InvalidInputException("Дороги могут быть только двусторонними. "
+                    "Убедитесь, что существуют оба пути между городами.\n");
+            }
         }
     }
 }
@@ -114,9 +137,7 @@ vector<string> readMatrixFromFile(vector<vector<int>>& adj_matrix, const string&
     while (getline(file, line)) {
         fillRowInVector(adj_matrix, labels, row, col, line);
     }
-    //????????????????????????????
-    if (row != col - 1)
-        throw InvalidInputException("названия городов в таблице смежности несимметричны");
+
     file.close();
     return labels;
 }

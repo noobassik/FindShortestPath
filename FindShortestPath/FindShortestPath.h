@@ -1,48 +1,89 @@
-#include <iostream>
+п»ї#include <iostream>
 #include <vector>
 #include <string>
 #include "Exceptions.h"
 using namespace std;
+class FileNotFoundException : public std::exception {
 
-/*! Определить, является ли строка числом
-*\param[in] s - анализируемая строка
-* return - является строка числом или нет
+private:
+    string message;
+
+
+public:
+
+    FileNotFoundException(string msg)
+    {
+        this->message = msg;
+    }
+
+
+    string what()
+    {
+        return "Р’Рѕ РІС…РѕРґРЅРѕРј С„Р°Р№Р»Рµ: " + message;
+    }
+
+};
+
+class InvalidInputException : public std::exception {
+
+private:
+    string message;
+
+
+public:
+
+    InvalidInputException(string msg)
+    {
+        this->message = msg;
+    }
+
+
+    string what()
+    {
+        return "РІС…РѕРґРЅС‹Рµ РґР°РЅРЅС‹Рµ " + message;
+    }
+
+};
+
+/*! РћРїСЂРµРґРµР»РёС‚СЊ, СЏРІР»СЏРµС‚СЃСЏ Р»Рё СЃС‚СЂРѕРєР° С‡РёСЃР»РѕРј
+*\param[in] s - Р°РЅР°Р»РёР·РёСЂСѓРµРјР°СЏ СЃС‚СЂРѕРєР°
+* return - СЏРІР»СЏРµС‚СЃСЏ СЃС‚СЂРѕРєР° С‡РёСЃР»РѕРј РёР»Рё РЅРµС‚
 */
 bool ifStringIsDigit(const string s);
 
-/*! Найти стоимость кратчайшего маршрута с заданного источника до последнего города
-*\param[in] adj_matrix - матрица смежности
-*\param[in] V - количество рассматриваемых вершин
-*\param[in] src - источник
-* return - стоимость кратчайшего маршрута до последнего города
+/*! РќР°Р№С‚Рё СЃС‚РѕРёРјРѕСЃС‚СЊ РєСЂР°С‚С‡Р°Р№С€РµРіРѕ РјР°СЂС€СЂСѓС‚Р° СЃ Р·Р°РґР°РЅРЅРѕРіРѕ РёСЃС‚РѕС‡РЅРёРєР° РґРѕ РїРѕСЃР»РµРґРЅРµРіРѕ РіРѕСЂРѕРґР°
+*\param[in] adj_matrix - РјР°С‚СЂРёС†Р° СЃРјРµР¶РЅРѕСЃС‚Рё
+*\param[in] V - РєРѕР»РёС‡РµСЃС‚РІРѕ СЂР°СЃСЃРјР°С‚СЂРёРІР°РµРјС‹С… РІРµСЂС€РёРЅ
+*\param[in] src - РёСЃС‚РѕС‡РЅРёРє
+* return - СЃС‚РѕРёРјРѕСЃС‚СЊ РєСЂР°С‚С‡Р°Р№С€РµРіРѕ РјР°СЂС€СЂСѓС‚Р° РґРѕ РїРѕСЃР»РµРґРЅРµРіРѕ РіРѕСЂРѕРґР°
 */
 int findShortestPath(vector<vector<int>> adj_matrix, int V, int src);
 
-/*! Заполнение строки в матрице
-*\param[in, out] adj_matrix - матрица смежности
-*\param[in] labels - вектор городов
-*\param[in] row - количество строк
-*\param[in, out] col - количество столбцов
-*\param[in] line - строка, из которой берутся значения
+/*! Р—Р°РїРѕР»РЅРµРЅРёРµ СЃС‚СЂРѕРєРё РІ РјР°С‚СЂРёС†Рµ
+*\param[in, out] adj_matrix - РјР°С‚СЂРёС†Р° СЃРјРµР¶РЅРѕСЃС‚Рё
+*\param[in] labels - РІРµРєС‚РѕСЂ РіРѕСЂРѕРґРѕРІ
+*\param[in] row - РєРѕР»РёС‡РµСЃС‚РІРѕ СЃС‚СЂРѕРє
+*\param[in, out] col - РєРѕР»РёС‡РµСЃС‚РІРѕ СЃС‚РѕР»Р±С†РѕРІ
+*\param[in] line - СЃС‚СЂРѕРєР°, РёР· РєРѕС‚РѕСЂРѕР№ Р±РµСЂСѓС‚СЃСЏ Р·РЅР°С‡РµРЅРёСЏ
 */
-void fillRowInVector(vector<vector<int>>& adj_matrix, vector<string> labels, int row, int& col, string line);
+void fillRowInVector(vector<vector<int>>& adj_matrix, vector<string> labels, int& row, int& col, string line);
 
-/* Валидация считанной матрицы
+/* Р’Р°Р»РёРґР°С†РёСЏ СЃС‡РёС‚Р°РЅРЅРѕР№ РјР°С‚СЂРёС†С‹
 *\param[in] adj_matrix
 *\param[in] labels
 */
 void matrixValidation(vector<vector<int>>& adj_matrix, vector<string> labels);
 
-/*! Считать матрицу с файла
-*\param[in,out] adj_matrix - матрица смежности
-*\param[in] inputFilePath - путь к входному файлу
-* return - вектор городов
+/*! РЎС‡РёС‚Р°С‚СЊ РјР°С‚СЂРёС†Сѓ СЃ С„Р°Р№Р»Р°
+*\param[in,out] adj_matrix - РјР°С‚СЂРёС†Р° СЃРјРµР¶РЅРѕСЃС‚Рё
+*\param[in] inputFilePath - РїСѓС‚СЊ Рє РІС…РѕРґРЅРѕРјСѓ С„Р°Р№Р»Сѓ
+* return - РІРµРєС‚РѕСЂ РіРѕСЂРѕРґРѕРІ
 */
 vector<string> readMatrixFromFile(vector<vector<int>>& adj_matrix, const string& inputFilePath);
 
-/*! Вывод результата в выходной файл
-*\param[in] result - стоимость кратчайшего маршрута до последнего города
-*\param[in] outputFilePath - путь к выходному файлу
+/*! Р’С‹РІРѕРґ СЂРµР·СѓР»СЊС‚Р°С‚Р° РІ РІС‹С…РѕРґРЅРѕР№ С„Р°Р№Р»
+*\param[in] result - СЃС‚РѕРёРјРѕСЃС‚СЊ РєСЂР°С‚С‡Р°Р№С€РµРіРѕ РјР°СЂС€СЂСѓС‚Р° РґРѕ РїРѕСЃР»РµРґРЅРµРіРѕ РіРѕСЂРѕРґР°
+*\param[in] outputFilePath - РїСѓС‚СЊ Рє РІС‹С…РѕРґРЅРѕРјСѓ С„Р°Р№Р»Сѓ
 */
 void outputResultToFile(int result, const string& outputFilePath);
 
