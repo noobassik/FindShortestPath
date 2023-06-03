@@ -71,14 +71,18 @@ void fillRowInVector(vector<vector<int>>& adj_matrix, vector<string> labels, int
             if (col > 0)    // Если рассматривается не первый символ строки
             {
                 // Если существует лишняя стоимость бензина, то выдать исключение
-                if (labels.size() + 1 == col)   
+                if (labels.size() + 1 == col)
                     throw InvalidInputException("содержится лишняя стоимость бензина");
                 // Если количество строк совпадает с количеством городов (row при корректных данных меньше количества городов на единицу), то выдать исключение
-                if (row == labels.size())       
+                if (row == labels.size())
                     throw InvalidInputException("названия городов в таблице смежности несимметричны");
-               // Если символ является числом, то записать его в матрицу смежности, иначе выдать исключение
+                // Если символ является числом, то записать его в матрицу смежности, иначе выдать исключение
                 ifStringIsDigit(value) ? adj_matrix[row][col - 1] = stoi(value) : throw InvalidInputException("значениеми таблицы должны являеться неотрицательные числа");
             }
+            else if (row == labels.size())
+                throw InvalidInputException("названия городов в таблице смежности несимметричны");
+            else if (col == 0 and labels[row] != value)     // Если названия городов не совпадают
+                throw InvalidInputException("test");
         }
         else                // Иначе выдать исключение
             throw InvalidInputException("значениеми таблицы должны являеться неотрицательные числа");
@@ -232,6 +236,7 @@ int main(int argc, char* argv[])
     catch (InvalidInputException e)
     {
         cout << e.what() << endl;
+        return 0;
     }
 
     int result = findShortestPath(adj_matrix, labels.size(), 0);
