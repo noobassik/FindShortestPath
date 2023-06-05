@@ -82,7 +82,7 @@ void fillRowInVector(vector<vector<int>>& adj_matrix, vector<string> labels, int
             else if (row == labels.size())
                 throw InvalidInputException("названия городов в таблице смежности несимметричны");
             else if (col == 0 and labels[row] != value)     // Если названия городов не совпадают
-                throw InvalidInputException("test");
+                throw InvalidInputException("названия городов не совпадают");
         }
         else                // Иначе выдать исключение
             throw InvalidInputException("значениеми таблицы должны являеться неотрицательные числа");
