@@ -79,12 +79,13 @@ void fillRowInVector(vector<vector<int>>& adj_matrix, vector<string> labels, int
                 // Если символ является числом, то записать его в матрицу смежности, иначе выдать исключение
                 ifStringIsDigit(value) ? adj_matrix[row][col - 1] = stoi(value) : throw InvalidInputException("значениеми таблицы должны являеться неотрицательные числа");
             }
+            // Если количество строк совпадает с количеством городов (row при корректных данных меньше количества городов на единицу), то выдать исключение
             else if (row == labels.size())
                 throw InvalidInputException("названия городов в таблице смежности несимметричны");
-            else if (col == 0 and labels[row] != value)     // Если названия городов не совпадают
+            else if (col == 0 and labels[row] != value)     // Если названия городов не совпадают, то выдать исключение
                 throw InvalidInputException("названия городов не совпадают");
         }
-        else                // Иначе выдать исключение
+        else    // Иначе выдать исключение
             throw InvalidInputException("значениеми таблицы должны являеться неотрицательные числа");
         col++;
     }
@@ -93,27 +94,23 @@ void fillRowInVector(vector<vector<int>>& adj_matrix, vector<string> labels, int
 
 void matrixValidation(vector<vector<int>>& adj_matrix, vector<string> labels)
 {
-    int zeroCounter = 0;    // Счетчик нулевых значений в строке 
     for (size_t i = 0; i < labels.size(); i++)
     {
         for (size_t j = 0; j < labels.size(); j++)
         {
             for (size_t k = 0; k < labels.size(); k++)
             {
-                // Если в городе прибытия неверно указана стоимость в матрице смежности (в одном столбце значения либо равны, либо нулевые)
+                // Если в городе прибытия неверно указана стоимость в матрице смежности (в одном столбце значения либо равны, либо нулевые), то выдать исключение
                 if (adj_matrix[j][i] != adj_matrix[k][i] and adj_matrix[j][i] != 0 and adj_matrix[k][i] != 0)
                     throw InvalidInputException("в таблице смежности неверно указана стоимость бензина в городе прибытия.");
-                // Если существует дорога из города в этот же город (петля)
+                // Если существует дорога из города в этот же город (петля), то выдать исключение
                 if (adj_matrix[k][k] != 0)
                     throw InvalidInputException("в таблице смежности содержится петля");
-                // Если последняя строка содержит нули, то увеличить счетчик
-                if (adj_matrix[labels.size() - 1][k] == 0)
-                    zeroCounter++;
             }
-            // Если счетчик нулей равен количеству городов, то выдать исключение
-            if (zeroCounter == labels.size())
+            // Если названия городов несимметричны, то выдать исключение
+            if (adj_matrix[labels.size() - 1][0] == 0)
                 throw InvalidInputException("названия городов в таблице смежности несимметричны");
-            // Если существует дорога в первый город (первый столбец должен состоять из нулей)
+            // Если существует дорога в первый город (первый столбец должен состоять из нулей), то выдать исключение
             if (adj_matrix[i][0] != 0)
                 throw InvalidInputException("дороги в первый город быть не должно");
             // Если существует односторонняя дорога, кроме первого города, то выдать исключение
