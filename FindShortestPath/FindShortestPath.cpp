@@ -94,25 +94,31 @@ void fillRowInVector(vector<vector<int>>& adj_matrix, vector<string> labels, int
 
 void matrixValidation(vector<vector<int>>& adj_matrix, vector<string> labels)
 {
-    for (size_t i = 0; i < labels.size(); i++)
+    for (int i = 0; i < labels.size(); i++)
     {
-        for (size_t j = 0; j < labels.size(); j++)
+        int colValue = 0;
+        // Если существует дорога из города в этот же город (петля), то выдать исключение
+        if (adj_matrix[i][i] != 0)
+            throw InvalidInputException("в таблице смежности содержится петля");
+        // Если существует дорога в первый город (первый столбец должен состоять из нулей), то выдать исключение
+        if (adj_matrix[i][0] != 0)
+            throw InvalidInputException("дороги в первый город быть не должно");
+        for (int j = 0; j < labels.size(); j++)
         {
-            for (size_t k = 0; k < labels.size(); k++)
+            // Если в городе прибытия неверно указана стоимость в матрице смежности (в одном столбце значения либо равны, либо нулевые), то выдать исключение
+            if (adj_matrix[j][i] != colValue and adj_matrix[j][i] != 0 and colValue != 0)
             {
-                // Если в городе прибытия неверно указана стоимость в матрице смежности (в одном столбце значения либо равны, либо нулевые), то выдать исключение
-                if (adj_matrix[j][i] != adj_matrix[k][i] and adj_matrix[j][i] != 0 and adj_matrix[k][i] != 0)
-                    throw InvalidInputException("в таблице смежности неверно указана стоимость бензина в городе прибытия.");
-                // Если существует дорога из города в этот же город (петля), то выдать исключение
-                if (adj_matrix[k][k] != 0)
-                    throw InvalidInputException("в таблице смежности содержится петля");
+                throw InvalidInputException("в таблице смежности неверно указана стоимость бензина в городе прибытия.");
             }
+            if (adj_matrix[j][i] > colValue)
+            {
+                colValue = adj_matrix[j][i];
+            }
+
             // Если названия городов несимметричны, то выдать исключение
-            if (adj_matrix[labels.size() - 1][0] == 0)
-                throw InvalidInputException("названия городов в таблице смежности несимметричны");
-            // Если существует дорога в первый город (первый столбец должен состоять из нулей), то выдать исключение
-            if (adj_matrix[i][0] != 0)
-                throw InvalidInputException("дороги в первый город быть не должно");
+            /*if (adj_matrix[labels.size() - 1][0] == 0)
+                throw InvalidInputException("названия городов в таблице смежности несимметричны");*/
+
             // Если существует односторонняя дорога, кроме первого города, то выдать исключение
             if (((adj_matrix[i][j] == 0 and i > 0) and (adj_matrix[j][i] != 0 and j > 0)) or ((adj_matrix[i][j] != 0 and i > 0) and (adj_matrix[j][i] == 0 and j > 0))) {
                 throw InvalidInputException("Дороги могут быть только двусторонними. "
