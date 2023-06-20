@@ -12,7 +12,7 @@ FindShortestPath.exe ./test6.csv ./test6_output.txt > test6_results
 
 FindShortestPath.exe ./test7.csv ./test7_output.txt > test7_results
 
-FindShortestPath.exe ./test7.csv ./test8_output.txt > test8_results
+FindShortestPath.exe ./test8.csv ./test8_output.txt > test8_results
 
 
 
